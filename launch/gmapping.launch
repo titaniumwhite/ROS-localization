@@ -6,7 +6,7 @@
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <param name="base_frame" value="$(arg base_frame)"/>
     <param name="odom_frame" value="$(arg odom_frame)"/>
-    <param name="map_update_interval" value="0.5"/> <!-- frequency of wich we want to update the map -->
+    <param name="map_update_interval" value="0.5"/> <!-- frequency of which we want to update the map -->
     <param name="maxUrange" value="13.0"/>
     <param name="maxRange" value="13.5"/><!-- max range for the sensor -->
     <param name="sigma" value="0.05"/>
