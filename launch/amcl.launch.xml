@@ -8,7 +8,7 @@
   <arg name="base_frame_id"   default="scout/base_link"/>
   <arg name="global_frame_id" default="map"/>
 
-  <node pkg="project_robotics" type="amcl" name="amcl">
+  <node pkg="amcl" type="amcl" name="amcl">
     <param name="use_map_topic"             value="$(arg use_map_topic)"/>
     <!-- Publish scans from best pose at a max of 10 Hz -->
     <param name="odom_model_type"           value="diff"/>
