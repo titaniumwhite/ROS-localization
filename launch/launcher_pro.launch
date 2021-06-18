@@ -82,7 +82,7 @@
     <param name="twist0_differential" value="false"/>
 
     <param name="pose0_relative" value="true"/>
-    <param name="twist0_differential" value="false"/>
+    <param name="twist0_relative" value="false"/>
 
     <param name="print_diagnostics" value="true"/>
 
