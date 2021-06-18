@@ -7,7 +7,7 @@
     <param name="/use_sim_time" value="true" />
 
     <arg name="map_file"       default="$(find project_robotics)/maps/map1.yaml"/>
-    <arg name="world_file"     default="$(find project_robotics)/maps/stage/maze.world"/> 
+    <arg name="world_file"     default="$(find project_robotics)/maps/stage/maze.world"/>
     <arg name="initial_pose_x" default="0.0"/>
     <arg name="initial_pose_y" default="0.0"/>
     <arg name="initial_pose_a" default="0.0"/>
@@ -24,7 +24,7 @@
     </include>
 	
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
-    <param name="frame_id" value="map"/>
+        <param name="frame_id" value="map"/>
     </node>
 
     <node pkg="tf" type="static_transform_publisher" name="base_link_laser" args="0 0 0 90 0 0 scout/base_link laser 100" />
@@ -39,20 +39,67 @@
     <param name="odom_frame" value="scout/odom" />
     <param name="base_link_frame" value="scout/base_link" />
     <param name="world_frame" value="map" />
+
     <param name="twist0" value="/camera/odom/sample" />
     <rosparam param="twist0_config">[false, false, false, 
                                      false, false, false,
                                      true, true, false, 
                                      false, false, true,
                                      true, true, false]</rosparam>
-    <param name="pose0" value="/odom" />
-    <rosparam param="pose0_config">[true, true, false, 
+    
+    <param name="odom0" value="/amcl_pose" />
+    <rosparam param="odom0_config">[true, true, false, 
                                     false, false, true,
                                     false, false, false, 
                                     false, false, false,
                                     false, false, false]</rosparam>
+    
     <remap from="odometry/filtered" to="odometry/filtered_map"/>
     
+    <param name="odom0_differential" value="false"/>
+    <param name="twist0_differential" value="false"/>
+
+    <param name="odom0_relative" value="true"/>
+    <param name="twist0_differential" value="false"/>
+
+    <param name="print_diagnostics" value="true"/>
+
+    <param name="odom0_queue_size" value="1"/>
+    <param name="twist0_queue_size" value="1"/>
+
+    <rosparam param="process_noise_covariance">[0.05, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0.05, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0.06, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0.03, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0.03, 0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0.06, 0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0.025, 0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0.025, 0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0.04, 0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0.01, 0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0.01, 0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0.02, 0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0.01, 0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0.01, 0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0.015]</rosparam>
+
+    <rosparam param="initial_estimate_covariance">[1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                   0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                   0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                   0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                   0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                   0,    0,    0,    0,    0,    1e-9, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                   0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                                                   0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
+                                                   0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                                                   0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                                                   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                                                   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,  0,    0,    0,
+                                                   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
+                                                   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                                                   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]</rosparam>
+
+
     </node>
     
     <!--<rosparam command="load" file="$(find project_robotics)/params/navsat_transform_param.yaml" />-->
