@@ -30,30 +30,53 @@
     <node pkg="tf" type="static_transform_publisher" name="base_link_laser" args="0 0 0 90 0 0 scout/base_link laser 100" />
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find project_robotics)/rviz/rviz_config.rviz"/>
 
-    <node pkg="robot_localization" type="ekf_localization_node" 	 name="robot_localization_ekf_node_map"  clear_params="true">
+   <node pkg="robot_localization" type="ekf_localization_node" name="robot_localization_ekf_node_odom" clear_params="true">
+    <param name="frequency" value="10." />  
+    <param name="sensor_timeout" value="0.2" />  
+    <param name="two_d_mode" value="true" />
+    <param name="publish_tf" value="true" />
+
+    <param name="map_frame" value="map" />
+    <param name="odom_frame" value="scout/odom" />
+    <param name="base_link_frame" value="scout/base_link" />
+    <param name="world_frame" value="scout/odom" />
+
+    <param name="print_diagnostics" value="true" />
+    <remap from="odometry/filtered" to="odometry/filtered_twist" />
+    <param name="twist0" value="/camera/odom/sample/twist" />
+    <param name="twist0_differential" value="false"/>
+    <rosparam param="twist0_config">[false, false, false, 
+                                     false, false, true,
+                                     true, true, false, 
+                                     false, false, true,
+                                     false, false, false]</rosparam>
+  </node>
+
+  <!-- robot_localization EKF node for the map frame -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="robot_localization_ekf_node_map"  clear_params="true">
     <param name="frequency" value="10" />  
     <param name="sensor_timeout" value="0.2" />  
     <param name="two_d_mode" value="true" />
     <param name="publish_tf" value="true" />
+
     <param name="map_frame" value="map" />
     <param name="odom_frame" value="scout/odom" />
     <param name="base_link_frame" value="scout/base_link" />
     <param name="world_frame" value="map" />
-    <param name="twist0" value="/camera/odom/sample" />
+    <param name="twist0" value="/camera/odom/sample/twist" />
     <rosparam param="twist0_config">[false, false, false, 
                                      false, false, false,
                                      true, true, false, 
                                      false, false, true,
                                      true, true, false]</rosparam>
-    <param name="pose0" value="/odom" />
+    <param name="pose0" value="amcl_pose" />
     <rosparam param="pose0_config">[true, true, false, 
                                     false, false, true,
                                     false, false, false, 
                                     false, false, false,
                                     false, false, false]</rosparam>
     <remap from="odometry/filtered" to="odometry/filtered_map"/>
-    
-    </node>
+  </node>
     
     <!--<rosparam command="load" file="$(find project_robotics)/params/navsat_transform_param.yaml" />-->
 
