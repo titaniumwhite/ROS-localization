@@ -1,4 +1,4 @@
-<!-- Launch file ekf and navsat -->
+<!-- Launch file ekf  -->
 
 
 
@@ -7,13 +7,13 @@
     <param name="/use_sim_time" value="true" />
 
     <arg name="map_file"       default="$(find project_robotics)/maps/map1.yaml"/>
-   <!-- <arg name="world_file"     default="$(find nav2d_conf)/maps/stage/maze.world"/> -->
+    <arg name="world_file"     default="$(find project_robotics)/maps/stage/maze.world"/> 
     <arg name="initial_pose_x" default="0.0"/>
     <arg name="initial_pose_y" default="0.0"/>
     <arg name="initial_pose_a" default="0.0"/>
 
 
-   <!-- <include file="$(find project_robotics)/launch/gmapping.launch"/>-->
+   <!--<include file="$(find project_robotics)/launch/gmapping.launch"/>-->
 
     <include file="$(find project_robotics)/launch/amcl.launch.xml">
     <arg name="scan_topic" value="scan"/>
