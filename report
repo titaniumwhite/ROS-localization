@@ -1,0 +1,53 @@
+SECOND PROJECT ROBOTICS 
+
+Gabriele De Santis 10820992
+Alessandro Gaeta   10632035
+Tommaso Pieroni    10801962
+
+
+
+Small description of the files inside the archive:
+
+Folder: <launch>
+Has 3 files:
+
+- amcl.launch.xml: is the launch file were we set the frames and the parameters for amcl.
+
+- gmapping.launch: is the launch file used to launch gmapping. We found of particular relevance, in order to create a good map, properly setting some parameters such as the maxRange, maxUrange particles, linearUpdate and angularUpdate.   
+
+- launcher_pro.launch: is the main launch file used to launch the map_server, tf, rviz and robot_localization nodes. In the latter one, we specified all the frames necessary for the localization. Here we also launch the yaml file with the map created with the bag 1.
+
+
+Folder: <maps>
+
+In the maps folder you can find the files map1.pgm and map1.yaml which we created using gmapping on the bag 1.bag.
+
+
+Folder: <rviz>
+
+In the rviz folder there is the config file rviz_config.rviz used to launch rviz with a proper configuration for the scenario we are working on. 
+
+Folder: <tf_tree>
+
+Contains an image of the working tf tree.
+
+
+
+Bag used to create the map -> {1.bag}
+Bag used for the tests	   -> {2.bag, 3.bag}
+
+
+In order to launch gmapping ( to see the creation of the map ), inside a ROS environment type:
+$ <roslaunch project_robotics gmapping.launch>.
+Obviously make the selected bag (1.bag) play and then, to see the real-time creation of the map, open rviz and add the Topic "map".
+
+In order to launch the localizations nodes, together with RVIZ, inside a ROS environment type:
+$ <roslaunch project_robotics launcher_pro.launch>.
+Obviosuly make the selected bag play.
+
+In order to perform localization we chose the visual odometry + IMU (from which we get {X, Y, Yaw_dot} from the visual odometry, and {double derivative of X and Y} from IMU). We found that this sensors are the most reliable.
+We fused to it the scout odmoetry from which we get {X, Y, Yaw}. We chose this sensor because we found that also this sensor was reliable enough.
+
+
+
+
