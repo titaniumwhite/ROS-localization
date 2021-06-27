@@ -2,7 +2,10 @@
   <arg name="scan_topic"  default="scan"/>
   <arg name="base_frame"  default="/scout/base_link"/>
   <arg name="odom_frame"  default="/scout/odom"/>
+  
+<node pkg="tf" type="static_transform_publisher" name="base_link_laser" args="0 0 0 90 0 0 scout/base_link laser 100" />
 
+  <param name="/use_sim_time" value="true" />
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <param name="base_frame" value="$(arg base_frame)"/>
     <param name="odom_frame" value="$(arg odom_frame)"/>
